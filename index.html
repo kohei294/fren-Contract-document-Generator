@@ -25,59 +25,57 @@
             background: white;
             color: #0f172a;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            box-sizing: border-box; /* パディングを含めて210mmにする */
+            box-sizing: border-box;
             position: relative;
         }
 
         .serif-font { font-family: 'Noto Serif JP', serif; }
 
         @media print {
-            /* 1. 全ての親要素の高さ制限とスクロール制限を完全に解除 */
-            html, body, #root, main, .print-wrap {
-                width: 100% !important;
+            /* 親要素の制限を完全に排除 */
+            html, body, #root, main {
+                width: 210mm !important; /* 幅を固定してスケールを安定させる */
                 height: auto !important;
-                min-height: 0 !important;
                 overflow: visible !important;
-                display: block !important; /* flexを解除 */
-                position: static !important;
+                display: block !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
 
-            /* 2. 印刷ページの設定 */
             @page {
                 size: A4;
-                margin: 0; /* ブラウザ側の余白設定に委ねる、または「なし」を推奨 */
+                margin: 0;
             }
 
             .no-print { display: none !important; }
 
-            body {
-                background-color: white !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* 3. 各ページ（A4コンテナ）の設定 */
+            /* コンテナの柔軟化 */
             .a4-container {
                 width: 210mm !important;
-                height: 297mm !important; /* 高さを固定して1ページに収める */
+                min-height: 297mm !important; /* height固定をmin-heightに変更 */
+                height: auto !important;
                 margin: 0 !important;
                 padding: 20mm !important;
                 box-shadow: none !important;
                 border: none !important;
-                page-break-after: always !important; /* 古いブラウザ用 */
-                break-after: page !important;        /* モダンブラウザ用 */
-                overflow: hidden !important;        /* 1ページからはみ出さないように */
-                box-sizing: border-box !important;
+                overflow: visible !important; /* はみ出しを隠さない */
                 display: block !important;
-            }
-
-            /* 各ページの最後に改ページを強制 */
-            .print-page-break {
+                box-sizing: border-box !important;
                 page-break-after: always !important;
                 break-after: page !important;
+            }
+
+            /* 署名欄などがページを跨いで切れないようにする */
+            section, .signature-block {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            /* 印刷時のフッター調整（重なり防止） */
+            .print-footer {
+                position: relative !important;
+                margin-top: 10mm !important;
+                bottom: 0 !important;
             }
         }
     </style>
