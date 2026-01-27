@@ -14,25 +14,22 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
   
   const pageClass = "a4-container shadow-lg print:shadow-none mb-10 text-slate-900 relative min-h-[297mm] flex flex-col";
   const headerClass = "text-[9pt] text-slate-400 absolute top-4 left-0 right-0 text-center no-print";
-  const footerClass = "text-[9pt] text-slate-400 absolute bottom-4 left-0 right-0 text-center print-footer";
-  const articleTitleClass = "font-bold border-b border-slate-900 mb-1 font-sans text-[13px] pt-4";
-  const textClass = "text-[11.5px] leading-relaxed text-justify mb-2";
-  const listClass = "list-none pl-4 space-y-1 mb-2 text-[11.5px]";
+  const footerClass = "text-[9pt] text-slate-400 absolute bottom-4 left-0 right-0 text-center footer-page-number";
+  const articleTitleClass = "font-bold border-b border-slate-900 mb-1 font-sans text-[11px] pt-3";
+  const textClass = "text-[10px] leading-relaxed text-justify mb-1.5";
+  const listClass = "list-none pl-4 space-y-0.5 mb-1.5 text-[10px]";
 
   return (
     <div className="serif-font">
-      {/* ページ1 */}
+      {/* ページ1: 第1条〜第3条 */}
       <div className={pageClass}>
-        <div className="absolute top-8 right-8 text-[9pt] sans-font text-slate-400">
-          管理番号：{data.estimateNumber}
-        </div>
+        <div className="absolute top-8 right-8 text-[9pt] font-sans text-slate-400">管理番号：{data.estimateNumber}</div>
         <div className={headerClass}>業務委託基本契約書</div>
         <h1 className="text-2xl text-center mt-8 mb-12 font-sans font-bold tracking-[0.3em]">業務委託基本契約書</h1>
-        
-        <p className="text-[12px] leading-relaxed mb-8">
+        <p className="text-[11px] leading-relaxed mb-6">
           <span className="font-bold underline decoration-slate-900 underline-offset-4">{data.client.companyName || '株式会社●●'}</span>（以下「委託者」という。）と<span className="font-bold underline decoration-slate-900 underline-offset-4">{data.provider.companyName}</span>（以下「受託者」という。）とは、以下のとおり, 業務委託契約（以下「本契約」という。）を締結する。
         </p>
-
+        
         <section>
           <h2 className={articleTitleClass}>第1条 （委託業務）</h2>
           <div className={textClass}>
@@ -64,7 +61,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             </ul>
             2. 本契約の定めは, 個別契約に対して共通に適用されるものとする。ただし, 個別契約においては, 本契約と異なる定めをすることができるものとし, その場合における個別契約の定めの内容が本契約の定めと矛盾する場合は, 個別契約の定めの効力が優先するものとする。
           </div>
-          
+
           <h2 className={articleTitleClass}>第3条 （個別契約の成立）</h2>
           <div className={textClass}>
             1. 個別契約は, 委託者が受託者と協議の上決定した書式の注文書（電磁的方法を含む。以下同じ。）により発注し, 受託者がこれを承諾することによって成立する。<br/>
@@ -75,8 +72,9 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={footerClass}>- 1 -</div>
       </div>
 
-      {/* ページ2 */}
+      {/* ページ2: 第4条〜第8条 */}
       <div className={pageClass}>
+        <div className={headerClass}>業務委託基本契約書</div>
         <section>
           <h2 className={articleTitleClass}>第4条 （仕様等及び追加費用）</h2>
           <div className={textClass}>
@@ -122,8 +120,9 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={footerClass}>- 2 -</div>
       </div>
 
-      {/* ページ3 */}
+      {/* ページ3: 第9条〜第14条 */}
       <div className={pageClass}>
+        <div className={headerClass}>業務委託基本契約書</div>
         <section>
           <h2 className={articleTitleClass}>第9条 （検収）</h2>
           <div className={textClass}>
@@ -153,7 +152,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           <div className={textClass}>
             1. 本条は, 請負型業務の成果物に限り適用され, 準委任型業務には適用されない。<br/>
             2. 受託者は, 成果物の検収完了後1年以内に当該成果物について種類, 品質又は数量に関して契約の内容に適合しないもの（以下「契約不適合」という。）が発見された場合, 自己の責任と負担において当該成果物を修補するものとし, これによって委託者に生じた直接かつ通常の損害に限り賠償するものとする。なお, 当該損害賠償額の上限は, 当該個別契約に基づき受領した委託料の総額とする。<br/>
-            3. 前項の契約不適合が, 委託者の指示, 支給物, 又は委託者が採用した第三者のサービス等に起いた場合, 受託者はその責任を負わないものとする。
+            3. 前項の契約不適合が, 委託者の指示, 支給物, 又は委託者が採用した第三者のサービス等に起因する場合, 受託者はその責任を負わないものとする。
           </div>
 
           <h2 className={articleTitleClass}>第14条 （委託料）</h2>
@@ -172,8 +171,9 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={footerClass}>- 3 -</div>
       </div>
 
-      {/* ページ4 */}
+      {/* ページ4: 第15条〜第21条 */}
       <div className={pageClass}>
+        <div className={headerClass}>業務委託基本契約書</div>
         <section>
           <h2 className={articleTitleClass}>第15条 （費用）</h2>
           <div className={textClass}>
@@ -228,8 +228,9 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={footerClass}>- 4 -</div>
       </div>
 
-      {/* ページ5 */}
+      {/* ページ5: 第22条〜第29条 */}
       <div className={pageClass}>
+        <div className={headerClass}>業務委託基本契約書</div>
         <section>
           <h2 className={articleTitleClass}>第22条 （第三者の権利の利用等）</h2>
           <div className={textClass}>
@@ -281,8 +282,9 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={footerClass}>- 5 -</div>
       </div>
 
-      {/* ページ6 */}
+      {/* ページ6: 第30条〜第38条 ＋ 署名 */}
       <div className={pageClass}>
+        <div className={headerClass}>業務委託基本契約書</div>
         <section>
           <h2 className={articleTitleClass}>第30条 （中途解約）</h2>
           <div className={textClass}>
@@ -306,36 +308,36 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           <div className={textClass}>委託者及び受託者は, 自己又は自己の役員が, 反社会的勢力に該当しないこと, 及び反社会的勢力と社会的に非難されるべき関係を有していないことを表明し, 保証する。違反した場合, 相手方は何らの催告を要せず本契約を解除することができる。</div>
 
           <h2 className={articleTitleClass}>第35条 （有効期間等）</h2>
-          <div className={textClass}>本契約の有効期間は, 契約締結日から1年間とする。ただし, 期間満了の1か月前までに当当事者の一方から書面による別段の申し出がない限り, 本契約は同一条件にてさらに1年間自動的に更新されるものとし, 以後も同様とする。</div>
+          <div className={textClass}>本契約の有効期間は, 契約締結日から1年間とする。ただし, 期間満了の1か月前までに当事者の一方から書面による別段の申し出がない限り, 本契約は同一条件にてさらに1年間自動的に更新されるものとし, 以後も同様とする。</div>
 
           <h2 className={articleTitleClass}>第36条 （存続条項）</h2>
-          <div className={textClass}>本契約終了後といえども, 第9条（検収）, 第10条（所有権移転）, 第12条（保証等）, 第13条（契約不適合責任）, 第20条（成果物にかかる権利の取扱い）, 第21条（知的財産権等の取扱い）, 第26条（損害賠償）, 第27条（秘密保持義務）, 第34条（反社会的勢力の排除）, 第37条（準拠法及び管轄等）及び本条の規定は, なお有効に存続するものとする。</div>
+          <div className={textClass}>本契約終了後といえども, 第9条, 第10条, 第12条, 第13条, 第20条, 第21条, 第26条, 第27条, 第34条, 第37条及び本条の規定は, なお有効に存続するものとする。</div>
 
           <h2 className={articleTitleClass}>第37条 （準拠法及び管轄等）</h2>
-          <div className={textClass}>本契約は日本法に準拠し, 解釈されるものとする。本契約に関する一切の紛勝については, 東京地方裁判所又は東京簡易裁判所を第一審の専属的合意管轄裁判所とする。</div>
+          <div className={textClass}>本契約は日本法に準拠し, 解釈されるものとする。本契約に関する一切の紛争については, 東京地方裁判所を第一審の専属的合意管轄裁判所とする。</div>
 
           <h2 className={articleTitleClass}>第38条 （誠実義務）</h2>
-          <div className={textClass}>本契約及び個別契約に定めのない事項又は本契約及び個別契約の条項の解釈について疑義が生じたときは, 委託者及び受託者は, 信義誠実の原則に従い協議の上, 円満に解決を図るものとする。</div>
+          <div className={textClass}>本契約に定めのない事項又は本契約の条項の解釈について疑義が生じたときは, 委託者及び受託者は, 信義誠実の原則に従い協議の上, 円満に解決を図るものとする。</div>
         </section>
 
-        <div className="mt-12 space-y-12 signature-block">
-          <p className="text-[12px]">{formatDate(data.documentDate)}</p>
-          <div className="grid grid-cols-2 gap-12 text-[12px]">
+        <div className="mt-12 space-y-10 signature-block">
+          <p className="text-[11px]">{formatDate(data.documentDate)}</p>
+          <div className="grid grid-cols-2 gap-10 text-[10px]">
             <div className="space-y-4">
-              <p className="font-bold underline">（委託者）</p>
-              <div className="pl-4 space-y-1">
-                <p>住所：{data.client.address || '　　　　　　　　　　　　'}</p>
-                <p>社名：{data.client.companyName || '　　　　　　　　　　　　'}</p>
-                <p className="pt-4">代表：{data.client.representative || '　　　　　　　'}　印</p>
+              <p className="font-bold underline italic">（委託者）</p>
+              <div className="pl-4 space-y-2">
+                <p>住所：{data.client.address || '　'}</p>
+                <p>社名：{data.client.companyName || '　'}</p>
+                <p className="pt-2">代表：{data.client.representative || '　'}　印</p>
               </div>
             </div>
             <div className="space-y-4">
-              <p className="font-bold underline">（受託者）</p>
-              <div className="pl-4 space-y-1">
+              <p className="font-bold underline italic">（受託者）</p>
+              <div className="pl-4 space-y-2">
                 <p>住所：〒{data.provider.zipCode} {data.provider.address}</p>
-                <p>　　　{data.provider.building}</p>
+                {data.provider.building && <p>　　　{data.provider.building}</p>}
                 <p>社名：{data.provider.companyName}</p>
-                <p className="pt-4">代表：{data.provider.representative}　印</p>
+                <p className="pt-2">代表：{data.provider.representative}　印</p>
               </div>
             </div>
           </div>

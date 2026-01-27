@@ -33,30 +33,30 @@
         .sans-font { font-family: 'Noto Sans JP', sans-serif; }
 
         @media print {
-            /* 1. 印刷エンジンが内容を「1ページ」と誤認しないように、全親要素の制限を解除 */
-            html, body, #root, main, .print-wrap {
+            /* 1. 印刷エンジンが内容を「1枚の画像」として処理しないよう、全ての親要素をプレーンなブロックにする */
+            html, body, #root, main, .print-wrap, #root > div {
                 width: 100% !important;
                 height: auto !important;
                 min-height: 0 !important;
                 overflow: visible !important;
-                display: block !important; /* flex解除 */
+                display: block !important;
                 position: static !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                background-color: white !important;
+                background: white !important;
             }
 
             @page {
                 size: A4;
-                margin: 0; 
+                margin: 0;
             }
 
             .no-print { display: none !important; }
 
-            /* 2. A4コンテナの印刷挙動：高さを固定せず、はみ出しを許容する */
+            /* 2. 印刷時：高さ固定を解除し、改ページを制御する */
             .a4-container {
                 width: 210mm !important;
-                height: auto !important; /* コンテンツに応じた高さを許可（改ページをスムーズにする） */
+                height: auto !important; /* コンテンツ量に合わせて伸びることを許容（途切れ防止） */
                 min-height: 297mm !important;
                 margin: 0 !important;
                 padding: 20mm !important;
@@ -65,24 +65,24 @@
                 display: block !important;
                 box-sizing: border-box !important;
                 position: relative !important;
-                overflow: visible !important; /* 重要：はみ出した内容を隠さず物理的な次のページへ送る */
+                overflow: visible !important;
                 page-break-after: always !important;
                 break-after: page !important;
-                break-inside: auto !important;
             }
 
-            /* 署名欄やセクションが中途半端に切れるのを防ぐ */
-            section, h2, .signature-block {
+            /* 3. 各条項の途中で改ページされるのを防ぐ */
+            section, .signature-block {
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
             }
             
-            /* フッターの位置を印刷時に調整（固定ページ下部） */
-            .print-footer {
+            /* フッター（ページ番号）の位置固定 */
+            .footer-page-number {
                 position: absolute !important;
                 bottom: 10mm !important;
                 left: 0 !important;
                 right: 0 !important;
+                text-align: center !important;
             }
         }
     </style>
