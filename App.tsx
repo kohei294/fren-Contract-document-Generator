@@ -19,7 +19,7 @@ import { EstimateData, ProviderInfo } from './types';
 
 // GAS側のセキュリティ設定（GAS側のコードでもこのキーをチェックする必要があります）
 const API_ACCESS_KEY = 'fren-access'; 
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyd2YcoefprOvA3kA2YhqHhpGSA9rSMqkITwimTQNC-Zg05GJDpwu7xY7oN4b_eJrST/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby6j3MJ5qcU7G5k8teSOz-eOjt_RAOSrtmbwEVhYhFI0Rli4lZIpk52WVBBNoJlNiSW/exec'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
   companyName: 'fren株式会社',
