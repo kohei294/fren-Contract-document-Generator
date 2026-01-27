@@ -11,8 +11,17 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
   const [error, setError] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
-  // 環境変数からパスワードを取得（型エラー回避のため as any を使用）
-  const CORRECT_PASSWORD = (process as any).env.VITE_AUTH_PASSWORD || 'fren-access'; 
+  // 環境変数への安全なアクセス
+  const getPassword = () => {
+    try {
+      const env = (import.meta as any).env || {};
+      return env.VITE_AUTH_PASSWORD || 'fren-access';
+    } catch (e) {
+      return 'fren-access';
+    }
+  };
+
+  const CORRECT_PASSWORD = getPassword();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +43,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
         
         <div className="mb-12 inline-block">
           <div className="mb-4">
-            <span className="text-white font-black text-[36px] tracking-tighter">fren</span>
+            {/* 36px, font-black (太字), 非斜体 */}
+            <span className="text-white font-black text-[36px] tracking-tighter block leading-none">fren</span>
           </div>
           <p className="text-white text-[10px] font-bold uppercase tracking-[0.4em] mt-2 opacity-80">Contract document Generator</p>
         </div>

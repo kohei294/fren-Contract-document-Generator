@@ -17,9 +17,18 @@ import EstimateDashboard from './components/EstimateDashboard';
 import AuthGate from './components/AuthGate';
 import { EstimateData, ProviderInfo } from './types';
 
-// 環境変数の紐付け（型エラー回避のため as any を使用）
-const API_ACCESS_KEY = (process as any).env.VITE_GAS_API_KEY || 'fren-access'; 
-const GAS_API_URL = (process as any).env.VITE_GAS_API_URL || 'https://script.google.com/macros/library/d/17TJcuf1jt5tTnavo8wKYMABobt10o9vt_kLiE5NOBCsU7OvJqe3dW9dC/2'; 
+// 環境変数への安全なアクセス（ランタイムエラーを防止）
+const getEnv = () => {
+  try {
+    return (import.meta as any).env || {};
+  } catch (e) {
+    return {};
+  }
+};
+
+const env = getEnv();
+const API_ACCESS_KEY = env.VITE_GAS_API_KEY || 'fren-access'; 
+const GAS_API_URL = env.VITE_GAS_API_URL || 'https://script.google.com/macros/s/AKfycby6j3MJ5qcU7G5k8teSOz-eOjt_RAOSrtmbwEVhYhFI0Rli4lZIpk52WVBBNoJlNiSW/exec'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
   companyName: 'fren株式会社',
@@ -48,7 +57,6 @@ const App: React.FC = () => {
   const [savedEstimates, setSavedEstimates] = useState<EstimateData[]>([]);
   const [formKey, setFormKey] = useState<string>(crypto.randomUUID());
 
-  // 認証状態の初期チェック
   useEffect(() => {
     const authStatus = localStorage.getItem('fren_auth_status');
     if (authStatus === 'true') {
@@ -118,10 +126,11 @@ const App: React.FC = () => {
   const [estimateData, setEstimateData] = useState<EstimateData>(createInitialData());
 
   const fetchEstimates = async () => {
-    if (!GAS_API_URL) return;
+    if (!GAS_API_URL || GAS_API_URL.includes('library')) return;
     try {
       setIsSyncing(true);
       const response = await fetch(`${GAS_API_URL}?key=${API_ACCESS_KEY}`);
+      if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setSavedEstimates(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -218,8 +227,9 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col text-slate-900 font-sans print:block print:h-auto print:bg-white animate-in fade-in duration-1000">
       <nav className="no-print bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2">
-          <div className="bg-white p-1 rounded">
-            <span className="text-slate-900 font-bold text-xl px-1">fren</span>
+          <div className="bg-white p-1 rounded flex items-center justify-center min-w-[60px] h-[40px]">
+            {/* ナビロゴ: 36px相当 (text-4xl は約36px), font-black, 非斜体 */}
+            <span className="text-slate-900 font-black text-[24px] px-2 leading-none">fren</span>
           </div>
           <h1 className="text-lg font-medium tracking-tight ml-2">Contract document Generator</h1>
           {(isSyncing || isLoading) && <RefreshCw size={14} className="animate-spin ml-4 text-slate-400" />}
