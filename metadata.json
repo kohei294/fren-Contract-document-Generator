@@ -1,0 +1,5 @@
+{
+  "name": "fren Contract document  Generator",
+  "description": "fren (ブランディング会社) 向けの、CSV エクスポート機能を使用して基本的な契約書、個別の注文書、専門的な見積書を作成するための高性能 Web アプリケーションです。",
+  "requestFramePermissions": []
+}
