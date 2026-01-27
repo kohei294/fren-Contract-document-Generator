@@ -14,7 +14,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
   
   const pageClass = "a4-container shadow-lg print:shadow-none mb-10 text-slate-900 relative min-h-[297mm] flex flex-col";
   const headerClass = "text-[9pt] text-slate-400 absolute top-4 left-0 right-0 text-center no-print";
-  const footerClass = "text-[9pt] text-slate-400 absolute bottom-4 left-0 right-0 text-center";
+  const footerClass = "text-[9pt] text-slate-400 absolute bottom-4 left-0 right-0 text-center print-footer";
   const articleTitleClass = "font-bold border-b border-slate-900 mb-1 font-sans text-[13px] pt-4";
   const textClass = "text-[11.5px] leading-relaxed text-justify mb-2";
   const listClass = "list-none pl-4 space-y-1 mb-2 text-[11.5px]";
@@ -71,6 +71,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             2. 受託者は, 委託者の発注内容（委託業務の内容, 仕様, 納期その他個別契約に定める事項を含む。）に疑義又は異議がある場合, 注文書受領後３営業日以内に委託者にその旨通知する。当該期間内に, 何らの通知も委託者に到着しなかった場合, 当該期間が経過した時点で, 受託者が委託者の発注を承諾したものとみなす。
           </div>
         </section>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 1 -</div>
       </div>
 
@@ -117,6 +118,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             3. 受託者は, 納期までに成果物の納入を完了することができないとき若しくはそのおそれがあるとき, 又は委託業務の遂行が不能となった場合若しくはそのおそれがあるときには, 委託者に対して, 直ちに当該遅延又は不能にかかる具体的な状況をその理由とともに報告し, 委託者の指示を仰ぐものとする。
           </div>
         </section>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 2 -</div>
       </div>
 
@@ -151,7 +153,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           <div className={textClass}>
             1. 本条は, 請負型業務の成果物に限り適用され, 準委任型業務には適用されない。<br/>
             2. 受託者は, 成果物の検収完了後1年以内に当該成果物について種類, 品質又は数量に関して契約の内容に適合しないもの（以下「契約不適合」という。）が発見された場合, 自己の責任と負担において当該成果物を修補するものとし, これによって委託者に生じた直接かつ通常の損害に限り賠償するものとする。なお, 当該損害賠償額の上限は, 当該個別契約に基づき受領した委託料の総額とする。<br/>
-            3. 前項の契約不適合が, 委託者の指示, 支給物, 又は委託者が採用した第三者のサービス等に起因する場合, 受託者はその責任を負わないものとする。
+            3. 前項の契約不適合が, 委託者の指示, 支給物, 又は委託者が採用した第三者のサービス等に起いた場合, 受託者はその責任を負わないものとする。
           </div>
 
           <h2 className={articleTitleClass}>第14条 （委託料）</h2>
@@ -166,6 +168,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             6. 委託者は, 委託料の支払を怠ったときは, 支払期限の翌日から完済まで年14.6%の割合による遅延損害金を受託者に対して支払うものとする。
           </div>
         </section>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 3 -</div>
       </div>
 
@@ -221,6 +224,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             2. ただし, 準委任型業務の遂行過程で受託者が作成した資料（議事録, WBS, 一般的な提案資料等）の知的財産権については, 受託者に留保される場合があるものとし, 詳細は個別契約にて定める。
           </div>
         </section>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 4 -</div>
       </div>
 
@@ -273,6 +277,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             2. 委託者又は受託者は, 相手方が支払停止, 仮差押え, 差押え, 競売, 破産, 民事再生, 会社更生手続開始の申立てがあったとき, 又は公租公課の滞納処分を受けたときは, 何らの催告を要せず直ちに本契約及び個別契約を解除することができる。
           </div>
         </section>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 5 -</div>
       </div>
 
@@ -313,7 +318,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           <div className={textClass}>本契約及び個別契約に定めのない事項又は本契約及び個別契約の条項の解釈について疑義が生じたときは, 委託者及び受託者は, 信義誠実の原則に従い協議の上, 円満に解決を図るものとする。</div>
         </section>
 
-        <div className="mt-12 space-y-12">
+        <div className="mt-12 space-y-12 signature-block">
           <p className="text-[12px]">{formatDate(data.documentDate)}</p>
           <div className="grid grid-cols-2 gap-12 text-[12px]">
             <div className="space-y-4">
@@ -335,6 +340,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             </div>
           </div>
         </div>
+        <div className="flex-1"></div>
         <div className={footerClass}>- 6 -</div>
       </div>
     </div>
