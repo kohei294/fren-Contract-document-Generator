@@ -11,8 +11,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
   const [error, setError] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
-  // 環境変数からパスワードを取得（process.env を使用）
-  const CORRECT_PASSWORD = process.env.VITE_AUTH_PASSWORD || 'fren-access'; 
+  // 環境変数からパスワードを取得（型エラー回避のため as any を使用）
+  const CORRECT_PASSWORD = (process as any).env.VITE_AUTH_PASSWORD || 'fren-access'; 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

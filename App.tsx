@@ -17,9 +17,9 @@ import EstimateDashboard from './components/EstimateDashboard';
 import AuthGate from './components/AuthGate';
 import { EstimateData, ProviderInfo } from './types';
 
-// 環境変数の紐付け（process.env を使用）
-const API_ACCESS_KEY = process.env.VITE_GAS_API_KEY || 'fren-access'; 
-const GAS_API_URL = process.env.VITE_GAS_API_URL || 'https://script.google.com/macros/s/AKfycby6j3MJ5qcU7G5k8teSOz-eOjt_RAOSrtmbwEVhYhFI0Rli4lZIpk52WVBBNoJlNiSW/exec'; 
+// 環境変数の紐付け（型エラー回避のため as any を使用）
+const API_ACCESS_KEY = (process as any).env.VITE_GAS_API_KEY || 'fren-access'; 
+const GAS_API_URL = (process as any).env.VITE_GAS_API_URL || 'https://script.google.com/macros/library/d/17TJcuf1jt5tTnavo8wKYMABobt10o9vt_kLiE5NOBCsU7OvJqe3dW9dC/2'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
   companyName: 'fren株式会社',
