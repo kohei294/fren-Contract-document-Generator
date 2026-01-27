@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Printer, FileText, ClipboardList, ReceiptText } from 'lucide-react';
 import { EstimateData } from '../types';
@@ -17,7 +16,6 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
 
   const handlePrint = (e: React.MouseEvent) => {
     e.preventDefault();
-    // ブラウザの印刷機能を呼び出し
     window.print();
   };
 
@@ -30,7 +28,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center print:block print:w-full">
       {/* View Switcher */}
       <div className="no-print bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-2 mb-10 flex gap-2 border border-slate-200 sticky top-4 z-[100]">
         <button 
@@ -72,7 +70,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
       </div>
 
       {/* Document Container */}
-      <div className="print-page w-full flex flex-col items-center gap-10">
+      <div className="print-page w-full flex flex-col items-center gap-10 print:gap-0 print:block print:p-0">
         {view === 'BASIC' && <BasicContract data={data} />}
         {view === 'INDIVIDUAL' && <IndividualContract data={data} />}
         {view === 'ESTIMATE' && <EstimateSheet data={data} />}

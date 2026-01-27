@@ -15,10 +15,34 @@
             color: #0f172a;
         }
         @media print {
-            @page { size: A4; margin: 0; }
+            /* 印刷時に親要素のスクロール制限を完全に解除する */
+            html, body, #root, main, .print-wrap {
+                height: auto !important;
+                overflow: visible !important;
+                position: static !important;
+                display: block !important;
+            }
+            @page { 
+                size: A4; 
+                margin: 0; 
+            }
             .no-print { display: none !important; }
-            body { background-color: white !important; color: black !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .a4-container { box-shadow: none !important; margin: 0 auto !important; width: 210mm !important; min-height: 297mm !important; border: none !important; }
+            body { 
+                background-color: white !important; 
+                color: black !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+            }
+            .a4-container { 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                width: 210mm !important; 
+                min-height: 297mm !important; 
+                border: none !important;
+                /* ページごとに強制的に改ページさせる */
+                page-break-after: always !important;
+                break-after: page !important;
+            }
         }
         .a4-container {
             width: 210mm;

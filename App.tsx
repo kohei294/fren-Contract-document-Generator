@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   PlusCircle, 
@@ -41,7 +40,6 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
   const [savedEstimates, setSavedEstimates] = useState<EstimateData[]>([]);
-  // フォームの物理的リセット用キー
   const [formKey, setFormKey] = useState<string>(crypto.randomUUID());
 
   const getProvider = useCallback(() => {
@@ -152,7 +150,7 @@ const App: React.FC = () => {
   const handleNew = () => {
     if (confirm('入力をすべて破棄して新規作成しますか？')) {
       setEstimateData(createInitialData());
-      setFormKey(crypto.randomUUID()); // フォームを物理的に再マウント
+      setFormKey(crypto.randomUUID()); 
       setActiveTab('create');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -166,7 +164,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-slate-900 font-sans">
+    <div className="min-h-screen flex flex-col text-slate-900 font-sans print:h-auto print:overflow-visible">
       <nav className="no-print bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2">
           <div className="bg-white p-1 rounded">
@@ -204,7 +202,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <main className="flex-1 flex bg-slate-50 overflow-hidden">
+      <main className="flex-1 flex bg-slate-50 overflow-hidden print:overflow-visible print:h-auto">
         {activeTab === 'create' ? (
           <>
             {(viewMode === 'input' || viewMode === 'split') && (
@@ -215,13 +213,13 @@ const App: React.FC = () => {
               </div>
             )}
             {(viewMode === 'preview' || viewMode === 'split') && (
-              <div className="flex-1 p-8 overflow-y-auto h-[calc(100vh-120px)] print:p-0 print:overflow-visible">
+              <div className="flex-1 p-8 overflow-y-auto h-[calc(100vh-120px)] print:p-0 print:overflow-visible print:h-auto">
                 <DocumentPreview data={estimateData} />
               </div>
             )}
           </>
         ) : (
-          <div className="w-full p-8 overflow-y-auto">
+          <div className="w-full p-8 overflow-y-auto print:hidden">
             <EstimateDashboard estimates={savedEstimates} onLoad={handleLoadEstimate} onDelete={handleDelete} isSyncing={isSyncing || isLoading} />
           </div>
         )}
