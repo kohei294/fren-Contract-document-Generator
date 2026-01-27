@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { EstimateData } from '../../types';
 
@@ -31,7 +30,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <h1 className="text-2xl text-center mt-8 mb-12 font-sans font-bold tracking-[0.3em]">業務委託基本契約書</h1>
         
         <p className="text-[12px] leading-relaxed mb-8">
-          <span className="font-bold underline decoration-slate-900 underline-offset-4">{data.client.companyName || '株式会社●●'}</span>（以下「委託者」という。）と<span className="font-bold underline decoration-slate-900 underline-offset-4">{data.provider.companyName}</span>（以下「受託者」という。）とは、以下のとおり、業務委託契約（以下「本契約」という。）を締結する。
+          <span className="font-bold underline decoration-slate-900 underline-offset-4">{data.client.companyName || '株式会社●●'}</span>（以下「委託者」という。）と<span className="font-bold underline decoration-slate-900 underline-offset-4">{data.provider.companyName}</span>（以下「受託者」という。）とは、以下のとおり, 業務委託契約（以下「本契約」という。）を締結する。
         </p>
 
         <section>
