@@ -164,7 +164,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-slate-900 font-sans print:h-auto print:overflow-visible">
+    <div className="min-h-screen flex flex-col text-slate-900 font-sans print:block print:h-auto print:bg-white">
       <nav className="no-print bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2">
           <div className="bg-white p-1 rounded">
@@ -202,7 +202,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <main className="flex-1 flex bg-slate-50 overflow-hidden print:overflow-visible print:h-auto">
+      <main className="flex-1 flex bg-slate-50 overflow-hidden print:block print:overflow-visible print:h-auto print:bg-white">
         {activeTab === 'create' ? (
           <>
             {(viewMode === 'input' || viewMode === 'split') && (
@@ -213,7 +213,7 @@ const App: React.FC = () => {
               </div>
             )}
             {(viewMode === 'preview' || viewMode === 'split') && (
-              <div className="flex-1 p-8 overflow-y-auto h-[calc(100vh-120px)] print:p-0 print:overflow-visible print:h-auto">
+              <div className="flex-1 p-8 overflow-y-auto h-[calc(100vh-120px)] print:p-0 print:overflow-visible print:h-auto print:w-full print:block">
                 <DocumentPreview data={estimateData} />
               </div>
             )}

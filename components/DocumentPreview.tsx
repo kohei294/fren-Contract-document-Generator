@@ -28,7 +28,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col items-center print:block print:w-full">
+    <div className="flex flex-col items-center print:block print:w-full print:m-0 print:p-0">
       {/* View Switcher */}
       <div className="no-print bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-2 mb-10 flex gap-2 border border-slate-200 sticky top-4 z-[100]">
         <button 
@@ -70,7 +70,8 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
       </div>
 
       {/* Document Container */}
-      <div className="print-page w-full flex flex-col items-center gap-10 print:gap-0 print:block print:p-0">
+      {/* print:block を使用してflexの影響を完全に排除する */}
+      <div className="w-full flex flex-col items-center gap-10 print:gap-0 print:block print:p-0 print:w-full">
         {view === 'BASIC' && <BasicContract data={data} />}
         {view === 'INDIVIDUAL' && <IndividualContract data={data} />}
         {view === 'ESTIMATE' && <EstimateSheet data={data} />}

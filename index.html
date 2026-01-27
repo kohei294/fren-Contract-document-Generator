@@ -13,37 +13,10 @@
             font-family: 'Noto Sans JP', sans-serif;
             background-color: #f8fafc;
             color: #0f172a;
+            -webkit-font-smoothing: antialiased;
         }
-        @media print {
-            /* 印刷時に親要素のスクロール制限を完全に解除する */
-            html, body, #root, main, .print-wrap {
-                height: auto !important;
-                overflow: visible !important;
-                position: static !important;
-                display: block !important;
-            }
-            @page { 
-                size: A4; 
-                margin: 0; 
-            }
-            .no-print { display: none !important; }
-            body { 
-                background-color: white !important; 
-                color: black !important; 
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-            }
-            .a4-container { 
-                box-shadow: none !important; 
-                margin: 0 !important; 
-                width: 210mm !important; 
-                min-height: 297mm !important; 
-                border: none !important;
-                /* ページごとに強制的に改ページさせる */
-                page-break-after: always !important;
-                break-after: page !important;
-            }
-        }
+
+        /* 画面表示用のA4コンテナ */
         .a4-container {
             width: 210mm;
             min-height: 297mm;
@@ -52,8 +25,61 @@
             background: white;
             color: #0f172a;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            box-sizing: border-box; /* パディングを含めて210mmにする */
+            position: relative;
         }
+
         .serif-font { font-family: 'Noto Serif JP', serif; }
+
+        @media print {
+            /* 1. 全ての親要素の高さ制限とスクロール制限を完全に解除 */
+            html, body, #root, main, .print-wrap {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                display: block !important; /* flexを解除 */
+                position: static !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* 2. 印刷ページの設定 */
+            @page {
+                size: A4;
+                margin: 0; /* ブラウザ側の余白設定に委ねる、または「なし」を推奨 */
+            }
+
+            .no-print { display: none !important; }
+
+            body {
+                background-color: white !important;
+                color: black !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* 3. 各ページ（A4コンテナ）の設定 */
+            .a4-container {
+                width: 210mm !important;
+                height: 297mm !important; /* 高さを固定して1ページに収める */
+                margin: 0 !important;
+                padding: 20mm !important;
+                box-shadow: none !important;
+                border: none !important;
+                page-break-after: always !important; /* 古いブラウザ用 */
+                break-after: page !important;        /* モダンブラウザ用 */
+                overflow: hidden !important;        /* 1ページからはみ出さないように */
+                box-sizing: border-box !important;
+                display: block !important;
+            }
+
+            /* 各ページの最後に改ページを強制 */
+            .print-page-break {
+                page-break-after: always !important;
+                break-after: page !important;
+            }
+        }
     </style>
 <script type="importmap">
 {
