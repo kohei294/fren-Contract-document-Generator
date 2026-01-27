@@ -12,7 +12,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
     return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
   };
   
-  const pageClass = "a4-container shadow-lg print:shadow-none mb-10 text-slate-900 relative min-h-[297mm] flex flex-col";
+  const pageClass = "a4-container shadow-lg print:shadow-none mb-10 print:mb-0 text-slate-900 relative min-h-[297mm] flex flex-col";
   const headerClass = "text-[9pt] text-slate-400 absolute top-4 left-0 right-0 text-center no-print";
   const footerClass = "text-[9pt] text-slate-400 absolute bottom-4 left-0 right-0 text-center footer-page-number";
   const articleTitleClass = "font-bold border-b border-slate-900 mb-1 font-sans text-[11px] pt-3";
@@ -274,7 +274,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
 
           <h2 className={articleTitleClass}>第29条 （解除等）</h2>
           <div className={textClass}>
-            1. 委託者又は受託者は, 相手方が本契約又は個別契約のいずれかの条項に違反し, 相当期間を定めて催告したにもかかわらず当該違反が是正されないときは, 本契約及び個別契約の全部又は一部を解除することができる。<br/>
+            1. 委託者又は受託者は, 相手方が本契約又は個別契約のいずれかの条項に違反し, 相当期間を定めて催告したにもかかわらず当該違反が正されないときは, 本契約及び個別契約の全部又は一部を解除することができる。<br/>
             2. 委託者又は受託者は, 相手方が支払停止, 仮差押え, 差押え, 競売, 破産, 民事再生, 会社更生手続開始の申立てがあったとき, 又は公租公課の滞納処分を受けたときは, 何らの催告を要せず直ちに本契約及び個別契約を解除することができる。
           </div>
         </section>

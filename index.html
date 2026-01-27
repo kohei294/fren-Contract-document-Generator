@@ -33,7 +33,7 @@
         .sans-font { font-family: 'Noto Sans JP', sans-serif; }
 
         @media print {
-            /* 1. 印刷エンジンが内容を「1枚の画像」として処理しないよう、全ての親要素をプレーンなブロックにする */
+            /* 印刷時に親要素がマージンや高さを保持しないようにする */
             html, body, #root, main, .print-wrap, #root > div {
                 width: 100% !important;
                 height: auto !important;
@@ -53,11 +53,10 @@
 
             .no-print { display: none !important; }
 
-            /* 2. 印刷時：高さ固定を解除し、改ページを制御する */
+            /* 印刷時：サイズを厳格にA4に固定し、下部のマージンを消す */
             .a4-container {
                 width: 210mm !important;
-                height: auto !important; /* コンテンツ量に合わせて伸びることを許容（途切れ防止） */
-                min-height: 297mm !important;
+                height: 297mm !important;
                 margin: 0 !important;
                 padding: 20mm !important;
                 box-shadow: none !important;
@@ -65,18 +64,20 @@
                 display: block !important;
                 box-sizing: border-box !important;
                 position: relative !important;
-                overflow: visible !important;
+                overflow: hidden !important; /* 内容がはみ出して余計なページを作るのを防ぐ */
+            }
+
+            /* 最後のページ以外にだけ改ページを適用（末尾の白紙防止） */
+            .a4-container:not(:last-child) {
                 page-break-after: always !important;
                 break-after: page !important;
             }
 
-            /* 3. 各条項の途中で改ページされるのを防ぐ */
             section, .signature-block {
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
             }
             
-            /* フッター（ページ番号）の位置固定 */
             .footer-page-number {
                 position: absolute !important;
                 bottom: 10mm !important;

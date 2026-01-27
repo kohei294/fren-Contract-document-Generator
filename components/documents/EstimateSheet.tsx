@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { EstimateData, EstimateItem } from '../../types';
 
@@ -40,7 +39,7 @@ const EstimateSheet: React.FC<EstimateSheetProps> = ({ data }) => {
   };
 
   const dynamicNotes = getDynamicNotes();
-  const pageClass = "a4-container serif-font shadow-lg print:shadow-none text-slate-900 min-h-[297mm] mb-10 flex flex-col pt-[20mm] pb-[20mm] px-[25mm]";
+  const pageClass = "a4-container serif-font shadow-lg print:shadow-none text-slate-900 min-h-[297mm] mb-10 print:mb-0 flex flex-col pt-[20mm] pb-[20mm] px-[25mm]";
   const tableThClass = "bg-slate-50 border border-slate-900 p-2 text-[9pt] font-bold text-center font-sans uppercase tracking-wider";
   const tableTdClass = "border border-slate-900 p-2 text-[9pt]";
 
@@ -90,7 +89,6 @@ const EstimateSheet: React.FC<EstimateSheetProps> = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {/* Fix: Explicitly cast Object.entries to resolve 'unknown' type errors for 'items' */}
             {(Object.entries(groupedItems) as [string, EstimateItem[]][]).map(([cat, items]) => {
               const catTotal = items.reduce((s, i) => s + (i.unitPrice * i.quantity), 0);
               return (
@@ -131,7 +129,6 @@ const EstimateSheet: React.FC<EstimateSheetProps> = ({ data }) => {
       {/* ページ2: 詳細御見積明細書 */}
       <div className={pageClass}>
         <h2 className="text-[16pt] font-bold border-l-8 border-slate-900 pl-4 mb-8 font-sans">詳細御見積明細書</h2>
-        {/* Fix: Explicitly cast Object.entries to resolve 'unknown' type errors for 'items' */}
         {(Object.entries(groupedItems) as [string, EstimateItem[]][]).map(([cat, items], catIdx) => (
           <div key={cat} className="mb-10">
             <h3 className="text-[11pt] font-bold mb-3 border-b-2 border-slate-400 pb-1">{catIdx + 1}. {cat}</h3>
