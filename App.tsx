@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   PlusCircle, 
@@ -7,13 +8,17 @@ import {
   Columns,
   Maximize2,
   RefreshCw,
-  Trash2
+  Trash2,
+  LogOut
 } from 'lucide-react';
 import InputForm from './components/InputForm';
 import DocumentPreview from './components/DocumentPreview';
 import EstimateDashboard from './components/EstimateDashboard';
+import AuthGate from './components/AuthGate';
 import { EstimateData, ProviderInfo } from './types';
 
+// GAS側のセキュリティ設定（GAS側のコードでもこのキーをチェックする必要があります）
+const API_ACCESS_KEY = 'fren-access'; 
 const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyd2YcoefprOvA3kA2YhqHhpGSA9rSMqkITwimTQNC-Zg05GJDpwu7xY7oN4b_eJrST/exec'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
@@ -35,12 +40,21 @@ const generateEstimateNumber = (dateStr?: string) => {
 };
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<'create' | 'history'>('create');
   const [viewMode, setViewMode] = useState<'input' | 'split' | 'preview'>('split');
   const [isLoading, setIsLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
   const [savedEstimates, setSavedEstimates] = useState<EstimateData[]>([]);
   const [formKey, setFormKey] = useState<string>(crypto.randomUUID());
+
+  // 認証状態の初期チェック
+  useEffect(() => {
+    const authStatus = localStorage.getItem('fren_auth_status');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const getProvider = useCallback(() => {
     const saved = localStorage.getItem('fren_provider_info');
@@ -92,7 +106,8 @@ const App: React.FC = () => {
     if (!GAS_API_URL) return;
     try {
       setIsSyncing(true);
-      const response = await fetch(GAS_API_URL);
+      // GETリクエストに認証キーを付与
+      const response = await fetch(`${GAS_API_URL}?key=${API_ACCESS_KEY}`);
       const data = await response.json();
       setSavedEstimates(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -102,7 +117,9 @@ const App: React.FC = () => {
     }
   };
 
-  useEffect(() => { fetchEstimates(); }, []);
+  useEffect(() => { 
+    if (isAuthenticated) fetchEstimates(); 
+  }, [isAuthenticated]);
 
   const handleSave = async () => {
     try {
@@ -110,9 +127,15 @@ const App: React.FC = () => {
       localStorage.setItem('fren_provider_info', JSON.stringify(estimateData.provider));
       const subtotal = estimateData.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
       const totalAmount = subtotal - estimateData.discount;
+      
+      // POSTボディに認証キーを含める
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'save', data: { ...estimateData, totalAmount } })
+        body: JSON.stringify({ 
+          action: 'save', 
+          key: API_ACCESS_KEY, 
+          data: { ...estimateData, totalAmount } 
+        })
       });
       const result = await response.json();
       if (result.status !== 'success') throw new Error(result.message);
@@ -129,9 +152,14 @@ const App: React.FC = () => {
     if (!confirm('このデータを台帳から完全に削除しますか？')) return;
     try {
       setIsLoading(true);
+      // POSTボディに認証キーを含める
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'delete', id: String(targetId) })
+        body: JSON.stringify({ 
+          action: 'delete', 
+          key: API_ACCESS_KEY, 
+          id: String(targetId) 
+        })
       });
       const result = await response.json();
       if (result.status === 'success') {
@@ -144,6 +172,13 @@ const App: React.FC = () => {
       alert(`エラー: ${err.message}`);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    if (confirm('ログアウトしますか？')) {
+      localStorage.removeItem('fren_auth_status');
+      setIsAuthenticated(false);
     }
   };
 
@@ -163,8 +198,12 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  if (!isAuthenticated) {
+    return <AuthGate onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col text-slate-900 font-sans print:block print:h-auto print:bg-white">
+    <div className="min-h-screen flex flex-col text-slate-900 font-sans print:block print:h-auto print:bg-white animate-in fade-in duration-1000">
       <nav className="no-print bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-50 shadow-md">
         <div className="flex items-center gap-2">
           <div className="bg-white p-1 rounded">
@@ -179,6 +218,9 @@ const App: React.FC = () => {
           </button>
           <button onClick={() => setActiveTab('history')} className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${activeTab === 'history' ? 'bg-white text-slate-900 shadow' : 'hover:bg-slate-800'}`}>
             <History size={18} /><span>案件管理台帳</span>
+          </button>
+          <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-white transition-colors" title="ログアウト">
+            <LogOut size={18} />
           </button>
         </div>
       </nav>
