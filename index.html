@@ -16,35 +16,11 @@
             color: #0f172a;
         }
         @media print {
-            @page {
-                size: A4;
-                margin: 0;
-            }
-            .no-print {
-                display: none !important;
-            }
-            body {
-                background-color: white !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            .print-page {
-                margin: 0 !important;
-                padding: 0 !important;
-                box-shadow: none !important;
-                width: 100% !important;
-            }
-            .a4-container {
-                box-shadow: none !important;
-                margin: 0 auto !important;
-                width: 210mm !important;
-                min-height: 297mm !important;
-                page-break-after: always;
-                border: none !important;
-            }
+            @page { size: A4; margin: 0; }
+            .no-print { display: none !important; }
+            body { background-color: white !important; color: black !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .a4-container { box-shadow: none !important; margin: 0 auto !important; width: 210mm !important; min-height: 297mm !important; border: none !important; }
         }
-        /* Custom print styling to match A4 in browser view */
         .a4-container {
             width: 210mm;
             min-height: 297mm;
@@ -53,19 +29,18 @@
             background: white;
             color: #0f172a;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease;
         }
-        .serif-font {
-            font-family: 'Noto Serif JP', serif;
-        }
+        .serif-font { font-family: 'Noto Serif JP', serif; }
     </style>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
@@ -73,6 +48,6 @@
 </head>
 <body>
     <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>

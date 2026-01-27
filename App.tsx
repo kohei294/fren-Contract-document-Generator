@@ -15,9 +15,6 @@ import DocumentPreview from './components/DocumentPreview';
 import EstimateDashboard from './components/EstimateDashboard';
 import { EstimateData, ProviderInfo } from './types';
 
-// ==========================================
-// GASのWebアプリURL
-// ==========================================
 const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyd2YcoefprOvA3kA2YhqHhpGSA9rSMqkITwimTQNC-Zg05GJDpwu7xY7oN4b_eJrST/exec'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
@@ -44,8 +41,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
   const [savedEstimates, setSavedEstimates] = useState<EstimateData[]>([]);
-
-  // フォームの物理的リセット用キー（これが変わると入力フォームが強制リセットされる）
+  // フォームの物理的リセット用キー
   const [formKey, setFormKey] = useState<string>(crypto.randomUUID());
 
   const getProvider = useCallback(() => {
@@ -114,19 +110,15 @@ const App: React.FC = () => {
     try {
       setIsLoading(true);
       localStorage.setItem('fren_provider_info', JSON.stringify(estimateData.provider));
-      
       const subtotal = estimateData.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
       const totalAmount = subtotal - estimateData.discount;
-
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
         body: JSON.stringify({ action: 'save', data: { ...estimateData, totalAmount } })
       });
-
       const result = await response.json();
       if (result.status !== 'success') throw new Error(result.message);
-
-      alert('スプレッドシートへの保存・更新が完了しました。');
+      alert('スプレッドシートへの保存が完了しました。');
       await fetchEstimates(); 
     } catch (err: any) {
       alert(`保存失敗: ${err.message}`);
@@ -136,19 +128,16 @@ const App: React.FC = () => {
   };
 
   const handleDelete = async (targetId: string) => {
-    if (!confirm('このデータをスプレッドシートから完全に削除しますか？')) return;
-    
+    if (!confirm('このデータを台帳から完全に削除しますか？')) return;
     try {
       setIsLoading(true);
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
         body: JSON.stringify({ action: 'delete', id: String(targetId) })
       });
-      
       const result = await response.json();
       if (result.status === 'success') {
         alert('削除が完了しました。');
-        // ローカルの状態も即座に更新
         setSavedEstimates(prev => prev.filter(e => e.id !== targetId));
       } else {
         alert(`削除に失敗しました: ${result.message}`);
@@ -161,13 +150,9 @@ const App: React.FC = () => {
   };
 
   const handleNew = () => {
-    if (confirm('入力内容をすべて破棄し、新しい書類を作成しますか？')) {
-      // 1. データを初期化
-      const newData = createInitialData();
-      setEstimateData(newData);
-      // 2. keyを新しくすることで、InputFormコンポーネントを完全に作り直させる（重要）
-      setFormKey(crypto.randomUUID());
-      // 3. タブを切り替え、一番上へスクロール
+    if (confirm('入力をすべて破棄して新規作成しますか？')) {
+      setEstimateData(createInitialData());
+      setFormKey(crypto.randomUUID()); // フォームを物理的に再マウント
       setActiveTab('create');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -175,7 +160,7 @@ const App: React.FC = () => {
 
   const handleLoadEstimate = (data: EstimateData) => {
     setEstimateData(data);
-    setFormKey(data.id); // 読み込んだデータのIDをkeyに設定
+    setFormKey(data.id);
     setActiveTab('create');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -209,11 +194,11 @@ const App: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <button onClick={handleNew} className="flex items-center gap-2 px-4 py-2 text-red-500 border border-slate-200 rounded-lg text-xs font-bold hover:bg-red-50 transition shadow-sm">
-              <Trash2 size={16} /> 新規書類作成
+              <Trash2 size={16} /> 新規作成
             </button>
             <button onClick={handleSave} disabled={isLoading} className="flex items-center gap-2 px-8 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition shadow-lg font-bold text-sm">
               {isLoading ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} />}
-              <span>保存して台帳を更新</span>
+              <span>台帳に保存</span>
             </button>
           </div>
         </div>
@@ -225,7 +210,6 @@ const App: React.FC = () => {
             {(viewMode === 'input' || viewMode === 'split') && (
               <div className={`no-print bg-white border-r border-slate-200 overflow-y-auto h-[calc(100vh-120px)] ${viewMode === 'input' ? 'w-full' : 'w-[450px]'}`}>
                 <div className="p-6">
-                  {/* key={formKey} により、handleNew時にコンポーネントが物理的に再生成される */}
                   <InputForm key={formKey} data={estimateData} onChange={setEstimateData} isFullWidth={viewMode === 'input'} />
                 </div>
               </div>
@@ -238,12 +222,7 @@ const App: React.FC = () => {
           </>
         ) : (
           <div className="w-full p-8 overflow-y-auto">
-            <EstimateDashboard 
-              estimates={savedEstimates} 
-              onLoad={handleLoadEstimate} 
-              onDelete={handleDelete} 
-              isSyncing={isSyncing || isLoading} 
-            />
+            <EstimateDashboard estimates={savedEstimates} onLoad={handleLoadEstimate} onDelete={handleDelete} isSyncing={isSyncing || isLoading} />
           </div>
         )}
       </main>
