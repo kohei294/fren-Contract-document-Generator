@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Lock, ArrowRight, ShieldAlert } from 'lucide-react';
+import { ArrowRight, ShieldAlert } from 'lucide-react';
 
 interface AuthGateProps {
   onAuthenticated: () => void;
@@ -11,8 +11,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
   const [error, setError] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
-  // デフォルトパスワード
-  const CORRECT_PASSWORD = 'fren-access'; 
+  // 環境変数からパスワードを取得（process.env を使用）
+  const CORRECT_PASSWORD = process.env.VITE_AUTH_PASSWORD || 'fren-access'; 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,15 +33,15 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
       <div className={`max-w-md w-full px-8 text-center transition-transform duration-700 ${isExiting ? 'scale-95 translate-y-4' : 'scale-100 translate-y-0'} ${error ? 'animate-shake' : ''}`}>
         
         <div className="mb-12 inline-block">
-          <div className="p-2 rounded mb-4">
-            <span className="text-white font-black text-4xl px-2 tracking-tighter">fren</span>
+          <div className="mb-4">
+            <span className="text-white font-black text-[36px] tracking-tighter">fren</span>
           </div>
-          <p className="text-white text-[10px] font-bold uppercase tracking-[0.4em] mt-2">Contract document Generator</p>
+          <p className="text-white text-[10px] font-bold uppercase tracking-[0.4em] mt-2 opacity-80">Contract document Generator</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="relative group">
-            <label className="block text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-left">
+            <label className="block text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-left opacity-60">
               password
             </label>
             <div className="relative">
@@ -50,7 +50,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoFocus
-                className="w-full bg-transparent border-b border-slate-800 py-3 text-white text-xl font-light tracking-widest outline-none focus:border-white transition-colors placeholder:text-slate-800"
+                className="w-full bg-transparent border-b border-slate-800 py-3 text-white text-xl font-light tracking-widest outline-none focus:border-white transition-colors placeholder:text-slate-900"
                 placeholder="••••••••"
               />
               <button
@@ -69,7 +69,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
           )}
         </form>
 
-        <div className="mt-24 text-white text-[9px] uppercase tracking-widest font-medium">
+        <div className="mt-24 text-white text-[9px] uppercase tracking-widest font-medium opacity-40">
           &copy; 2026 fren Inc.
         </div>
       </div>

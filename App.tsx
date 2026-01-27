@@ -17,9 +17,9 @@ import EstimateDashboard from './components/EstimateDashboard';
 import AuthGate from './components/AuthGate';
 import { EstimateData, ProviderInfo } from './types';
 
-// GAS側のセキュリティ設定（GAS側のコードでもこのキーをチェックする必要があります）
-const API_ACCESS_KEY = 'fren-access'; 
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby6j3MJ5qcU7G5k8teSOz-eOjt_RAOSrtmbwEVhYhFI0Rli4lZIpk52WVBBNoJlNiSW/exec'; 
+// 環境変数の紐付け（process.env を使用）
+const API_ACCESS_KEY = process.env.VITE_GAS_API_KEY || 'fren-access'; 
+const GAS_API_URL = process.env.VITE_GAS_API_URL || 'https://script.google.com/macros/s/AKfycby6j3MJ5qcU7G5k8teSOz-eOjt_RAOSrtmbwEVhYhFI0Rli4lZIpk52WVBBNoJlNiSW/exec'; 
 
 const DEFAULT_PROVIDER: ProviderInfo = {
   companyName: 'fren株式会社',
@@ -84,7 +84,11 @@ const App: React.FC = () => {
       ipPattern: 'A' as const,
       estimateValidity: '本見積書発行日より2週間',
       paymentType: 'MILESTONE' as const,
-      revisions: { design: 2, coding: 1, others: '撮影後のレタッチは色調補正のみ（合成・変形は含まず）' },
+      revisions: {
+        design: 2,
+        coding: 1,
+        others: '撮影後のレタッチは色調補正のみ（合成・変形は含まず）'
+      },
       quasiPatterns: {
         selected: 'A' as const,
         A: { name: 'パターンA', price: '¥ 30,000 /人日', condition: '月 8 人日相当', overtime: 'あり' },
@@ -92,9 +96,20 @@ const App: React.FC = () => {
         C: { name: 'パターンC', price: '月額: ¥ ____ /月', condition: '制限なし', overtime: 'なし' },
         D: { name: '該当なし', price: '-', condition: '-', overtime: '-' }
       },
-      deliverables: { final: 'HTML/CSS/JS一式、提案資料（PDF形式）', intermediate: 'ワイヤーフレーム、デザインカンプ（画像またはFigma閲覧権限）', sourceData: false, sourceFormat: '.fig, .ai' },
+      deliverables: {
+        final: 'HTML/CSS/JS一式、提案資料（PDF形式）',
+        intermediate: 'ワイヤーフレーム、デザインカンプ（画像またはFigma閲覧権限）',
+        sourceData: false,
+        sourceFormat: '.fig, .ai'
+      },
       hasPhotography: true,
-      photoDetails: { days: '1', hours: '8', cuts: '50', modelInfo: '委託者にて手配（社員様等）', rightsHandling: 'CLIENT' as const },
+      photoDetails: {
+        days: '1',
+        hours: '8',
+        cuts: '50',
+        modelInfo: '委託者にて手配（社員様等）',
+        rightsHandling: 'CLIENT' as const
+      },
       hasNotes: false,
       notes: ''
     };
@@ -106,7 +121,6 @@ const App: React.FC = () => {
     if (!GAS_API_URL) return;
     try {
       setIsSyncing(true);
-      // GETリクエストに認証キーを付与
       const response = await fetch(`${GAS_API_URL}?key=${API_ACCESS_KEY}`);
       const data = await response.json();
       setSavedEstimates(Array.isArray(data) ? data : []);
@@ -128,7 +142,6 @@ const App: React.FC = () => {
       const subtotal = estimateData.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
       const totalAmount = subtotal - estimateData.discount;
       
-      // POSTボディに認証キーを含める
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
         body: JSON.stringify({ 
@@ -152,7 +165,6 @@ const App: React.FC = () => {
     if (!confirm('このデータを台帳から完全に削除しますか？')) return;
     try {
       setIsLoading(true);
-      // POSTボディに認証キーを含める
       const response = await fetch(GAS_API_URL, {
         method: 'POST',
         body: JSON.stringify({ 
@@ -209,7 +221,7 @@ const App: React.FC = () => {
           <div className="bg-white p-1 rounded">
             <span className="text-slate-900 font-bold text-xl px-1">fren</span>
           </div>
-          <h1 className="text-lg font-medium tracking-tight ml-2">Document Automation</h1>
+          <h1 className="text-lg font-medium tracking-tight ml-2">Contract document Generator</h1>
           {(isSyncing || isLoading) && <RefreshCw size={14} className="animate-spin ml-4 text-slate-400" />}
         </div>
         <div className="flex gap-4">
