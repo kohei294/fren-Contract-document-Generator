@@ -1,11 +1,13 @@
+
 import React from 'react';
 import { EstimateData } from '../../types';
 
 interface IndividualContractProps {
   data: EstimateData;
+  highlightSection?: string | null;
 }
 
-const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
+const IndividualContract: React.FC<IndividualContractProps> = ({ data, highlightSection }) => {
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '202X年  月  日';
     const date = new Date(dateStr);
@@ -41,13 +43,13 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
       <div className={pageClass}>
         <h1 className="text-[18pt] text-center mb-10 font-sans font-bold tracking-[0.2em] uppercase">個別契約書（発注書）</h1>
 
-        <div className="mb-6 leading-relaxed text-slate-900">
+        <div className={`mb-6 leading-relaxed text-slate-900 section-highlight ${highlightSection === 'header' ? 'active' : ''}`}>
           <p>
             委託者 <span className="border-b border-slate-900 px-4 font-bold">{data.client.companyName || '（未入力）'}</span>（以下「委託者」という。）と、受託者 <span className="font-bold underline">{data.provider.companyName}</span>（以下「受託者」という。）は、両者間で締結された業務委託基本契約書（以下「基本契約」という。）に基づき、以下の通り個別契約（以下「本契約」という。）を締結する。
           </p>
         </div>
 
-        <div className="border border-slate-900 p-3 mb-6 bg-white space-y-2">
+        <div className={`border border-slate-900 p-3 mb-6 bg-white space-y-2 section-highlight ${highlightSection === 'header' ? 'active' : ''}`}>
           <div>
             <strong>案件名：</strong>
             <span className="border-b border-slate-400 px-4 font-bold ml-2">{data.client.projectName}</span>
@@ -66,7 +68,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
 
         <h2 className={articleTitleClass}>第1条 （業務の区分）</h2>
         <p className="mb-2">本契約における委託業務の性質は、以下の通りとする。</p>
-        <div className="flex gap-8 justify-center py-3 border border-slate-200 rounded mb-4">
+        <div className={`flex gap-8 justify-center py-3 border border-slate-200 rounded mb-4 section-highlight ${highlightSection === 'type' ? 'active' : ''}`}>
           <CheckBox checked={data.contractType === 'FIXED'} label="請負型業務" />
           <CheckBox checked={data.contractType === 'QUASI'} label="準委任型業務" />
           <CheckBox checked={data.contractType === 'HYBRID'} label="混合（ハイブリッド型）" />
@@ -74,7 +76,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
 
         <h2 className={articleTitleClass}>第2条 （業務内容・仕様）</h2>
         <p className="mb-1.5">受託者は、委託者の指示に基づき、以下の業務を遂行する。</p>
-        <div className="border border-slate-900 p-3 min-h-[100px] space-y-1.5 mb-2 text-[10px]">
+        <div className={`border border-slate-900 p-3 min-h-[100px] space-y-1.5 mb-2 text-[10px] section-highlight ${highlightSection === 'items' ? 'active' : ''}`}>
           {data.items.length > 0 ? data.items.map((item, i) => (
             <p key={item.id}>{i + 1}. {item.name}（{item.details}）</p>
           )) : <p className="text-slate-300">（明細項目が未入力です）</p>}
@@ -83,7 +85,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
 
         <h2 className={articleTitleClass}>第3条 （成果物の範囲）</h2>
         <p className="mb-1.5">本業務における納品対象となる成果物の範囲は以下の通りとする。</p>
-        <table className="w-full border-collapse border border-slate-900 mb-4 text-slate-900">
+        <table className={`w-full border-collapse border border-slate-900 mb-4 text-slate-900 section-highlight ${highlightSection === 'deliverables' ? 'active' : ''}`}>
           <thead>
             <tr>
               <th className={tableThClass} style={{ width: '30%' }}>区分</th>
@@ -113,7 +115,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
 
         <h2 className={articleTitleClass}>第4条 （修正回数・修正範囲）</h2>
         <p className="mb-1.5 leading-relaxed">委託料に含まれる修正対応の範囲は以下の通りとする。これを超える修正、または仕様確定後の大幅な変更については、第5条または第7条に基づき追加費用を請求する場合がある。</p>
-        <ol className="list-decimal pl-6 space-y-0.5 text-[10px]">
+        <ol className={`list-decimal pl-6 space-y-0.5 text-[10px] section-highlight ${highlightSection === 'revisions' ? 'active' : ''}`}>
           <li>デザイン修正： 初回提案後、<span className="font-bold border-b border-slate-900 px-3">{data.revisions.design}</span> ラウンドまで</li>
           <li>コーディング修正： 実装・検証完了後の軽微な修正 <span className="font-bold border-b border-slate-900 px-3">{data.revisions.coding}</span> 回まで</li>
           <li>その他： {data.revisions.others}</li>
@@ -127,7 +129,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         <h2 className={articleTitleClass}>第5条 （準委任型業務の稼働条件）</h2>
         <p className="mb-2">準委任型業務（ディレクション、PM等）の委託料および稼働条件は、以下のいずれかのパターンを適用する。</p>
 
-        <table className="w-full border-collapse border border-slate-900 mb-6 text-slate-900">
+        <table className={`w-full border-collapse border border-slate-900 mb-6 text-slate-900 section-highlight ${highlightSection === 'quasi' ? 'active' : ''}`}>
           <thead>
             <tr>
               <th className={tableThClass} style={{ width: '15%' }}>項目</th>
@@ -180,7 +182,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         </div>
 
         <h2 className={articleTitleClass}>第6条 （スケジュール・納期）</h2>
-        <ol className="list-decimal pl-6 space-y-1.5 text-[10px]">
+        <ol className={`list-decimal pl-6 space-y-1.5 text-[10px] section-highlight ${highlightSection === 'schedule' ? 'active' : ''}`}>
           <li><strong>作業期間：</strong> <span className="font-bold border-b border-slate-900 px-4">{formatDate(data.workStartDate)}</span> 〜 <span className="font-bold border-b border-slate-900 px-4">{formatDate(data.workEndDate)}</span></li>
           <li><strong>最終納期：</strong> <span className="font-bold border-b border-slate-900 px-4">{formatDate(data.deliveryDate)}</span></li>
           <li><strong>納入場所：</strong> 委託者指定サーバー または 電磁的記録媒体</li>
@@ -194,7 +196,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         <h2 className={articleTitleClass}>第7条 （委託料）</h2>
         <p className="mb-2">本契約の委託料総額および内訳は以下の通りとする。</p>
 
-        <table className="w-full border-collapse border border-slate-900 mb-6 text-slate-900">
+        <table className={`w-full border-collapse border border-slate-900 mb-6 text-slate-900 section-highlight ${highlightSection === 'items' ? 'active' : ''}`}>
           <thead>
             <tr>
               <th className={tableThClass} style={{ width: '25%' }}>業務区分</th>
@@ -232,7 +234,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
             </tr>
 
             {data.discount > 0 && (
-              <tr>
+              <tr className={`section-highlight ${highlightSection === 'discount' ? 'active' : ''}`}>
                 <td className={`${tableTdClass} bg-slate-50 font-bold`}>(3) その他</td>
                 <td className={tableTdClass}>出精お値引き、端数調整</td>
                 <td className={`${tableTdClass} text-right text-red-600 font-bold font-sans`}>- ¥ { data.discount.toLocaleString() }</td>
@@ -247,12 +249,12 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         </table>
 
         <h2 className={articleTitleClass}>第8条 （支払方法・支払期日）</h2>
-        <div className="flex gap-10 mb-4 text-[10px]">
+        <div className={`flex gap-10 mb-4 text-[10px] section-highlight ${highlightSection === 'payment' ? 'active' : ''}`}>
           <CheckBox checked={data.paymentType === 'SINGLE'} label="一括払い（検収完了月の翌月末払い）" />
           <CheckBox checked={data.paymentType === 'MILESTONE'} label="分割払い（マイルストーン払い）" />
         </div>
         {data.paymentType === 'MILESTONE' && (
-          <table className="w-full border-collapse border border-slate-900 mb-6 text-slate-900">
+          <table className={`w-full border-collapse border border-slate-900 mb-6 text-slate-900 section-highlight ${highlightSection === 'payment' ? 'active' : ''}`}>
             <thead>
               <tr>
                 <th className={tableThClass} style={{ width: '20%' }}>回数</th>
@@ -287,12 +289,12 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         </ol>
 
         <h2 className={articleTitleClass}>第10条 （撮影条件）</h2>
-        <div className="flex gap-10 mb-3 text-[10px]">
+        <div className={`flex gap-10 mb-3 text-[10px] section-highlight ${highlightSection === 'photography' ? 'active' : ''}`}>
           <CheckBox checked={!data.hasPhotography} label="撮影なし" />
           <CheckBox checked={data.hasPhotography} label="撮影あり（以下の条件を適用）" />
         </div>
         {data.hasPhotography && (
-          <table className="w-full border-collapse border border-slate-900 mb-6 text-slate-900">
+          <table className={`w-full border-collapse border border-slate-900 mb-6 text-slate-900 section-highlight ${highlightSection === 'photography' ? 'active' : ''}`}>
             <tbody>
               <tr>
                 <th className={tableThClass} style={{ width: '25%' }}>撮影日数・時間</th>
@@ -322,7 +324,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         <h2 className={articleTitleClass}>第11条 （知的財産権の取扱い）</h2>
         <p className="mb-3 font-bold text-slate-700 text-[10px]">本業務に関する知的財産権の取扱いは、以下のいずれかを適用する。</p>
         
-        <div className={`border p-4 mb-3 rounded ${data.ipPattern === 'A' ? 'border-slate-900 bg-slate-50' : 'border-slate-200 opacity-60'}`}>
+        <div className={`border p-4 mb-3 rounded section-highlight ${highlightSection === 'rights' ? 'active' : ''} ${data.ipPattern === 'A' ? 'border-slate-900 bg-slate-50' : 'border-slate-200 opacity-60'}`}>
           <div className="mb-1 font-bold flex items-center gap-2 text-[10px]">
             <CheckBox checked={data.ipPattern === 'A'} label="パターンA：著作権移転型" />
           </div>
@@ -331,7 +333,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
           </p>
         </div>
 
-        <div className={`border p-4 mb-6 rounded ${data.ipPattern === 'B' ? 'border-slate-900 bg-slate-50' : 'border-slate-200 opacity-60'}`}>
+        <div className={`border p-4 mb-6 rounded section-highlight ${highlightSection === 'rights' ? 'active' : ''} ${data.ipPattern === 'B' ? 'border-slate-900 bg-slate-50' : 'border-slate-200 opacity-60'}`}>
           <div className="mb-1 font-bold flex items-center gap-2 text-[10px]">
             <CheckBox checked={data.ipPattern === 'B'} label="パターンB：受託者保有 + 利用権許諾型" />
           </div>
@@ -341,7 +343,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
         </div>
 
         <h2 className={articleTitleClass}>第12条 （特記事項）</h2>
-        <div className="border border-slate-900 p-4 min-h-[80px] text-slate-800 leading-relaxed text-slate-900 text-[10px]">
+        <div className={`border border-slate-900 p-4 min-h-[80px] text-slate-800 leading-relaxed text-slate-900 text-[10px] section-highlight ${highlightSection === 'notes' ? 'active' : ''}`}>
           <p>1. 中間成果物（デザイン元データ等）の納品は、第3条の定めに従う。</p>
           <p>2. 本契約に定めのない事項については、基本契約の定めに従うものとする。</p>
           {data.hasNotes && data.notes && (
@@ -358,7 +360,7 @@ const IndividualContract: React.FC<IndividualContractProps> = ({ data }) => {
           本契約の成立を証するため、本書2通を作成し、委託者及び受託者双方が記名押印の上、各1通を保有する。
         </p>
 
-        <div className="space-y-12 text-slate-900">
+        <div className={`space-y-12 text-slate-900 section-highlight ${highlightSection === 'signature' ? 'active' : ''}`}>
           <div className="text-center mb-6">
             <p className="text-[14pt] font-bold border-b-2 border-slate-900 inline-block px-16 pb-1">
               {formatDate(data.documentDate)}

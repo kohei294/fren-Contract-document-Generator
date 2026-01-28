@@ -1,11 +1,13 @@
+
 import React from 'react';
 import { EstimateData } from '../../types';
 
 interface BasicContractProps {
   data: EstimateData;
+  highlightSection?: string | null;
 }
 
-const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
+const BasicContract: React.FC<BasicContractProps> = ({ data, highlightSection }) => {
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '202X年  月  日';
     const date = new Date(dateStr);
@@ -27,10 +29,10 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
         <div className={headerClass}>業務委託基本契約書</div>
         <h1 className="text-2xl text-center mt-8 mb-12 font-sans font-bold tracking-[0.3em]">業務委託基本契約書</h1>
         <p className="text-[11px] leading-relaxed mb-6">
-          <span className="font-bold underline decoration-slate-900 underline-offset-4">{data.client.companyName || '株式会社●●'}</span>（以下「委託者」という。）と<span className="font-bold underline decoration-slate-900 underline-offset-4">{data.provider.companyName}</span>（以下「受託者」という。）とは、以下のとおり, 業務委託契約（以下「本契約」という。）を締結する。
+          <span className="font-bold underline decoration-slate-900 underline-offset-4">{data.client.companyName || '株式会社●●'}</span>（以下「委託者」という。）と<span className="font-bold underline decoration-slate-900 underline-offset-4">{data.provider.companyName}</span>（以下「受託者」という。）とは, 以下のとおり, 業務委託契約（以下「本契約」という。）を締結する。
         </p>
         
-        <section>
+        <section className={`section-highlight ${highlightSection === 'header' ? 'active' : ''}`}>
           <h2 className={articleTitleClass}>第1条 （委託業務）</h2>
           <div className={textClass}>
             1. 委託者は, 受託者に対し, {data.client.projectName || 'コーポレートリブランディング業務、ブランドサイトの企画、設計、制作及びリニューアル業務、並びにこれらに付随関連するプロジェクトマネジメント業務等'}（以下「委託業務」という。）を委託し, 受託者はこれを受託する。<br/>
@@ -41,7 +43,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
             </ul>
             3. 受託者は, 個別契約に定める内容に従い, 請負型業務については成果物の完成義務を負い, 準委任型業務については善良な管理者の注意をもって業務を遂行するものとする。<br/>
             4. 委託者及び受託者は, 委託業務の内容, 範囲を変更する場合, 双方協議のうえ書面を作成し, 記名押印により合意することでこれを行わなければならないものとする。<br/>
-            5. 委託者及び受託者は, 追加業務を要する場合には, 第4条及び個別契約の定めに従い, 追加業務の内容, 委託料の金額その他必要な事項を定めるものとする。
+            5. 委託者及び受託者は, 追加業務を要する場合には, 第4条及び個別契約의 定めに従い, 追加業務の内容, 委託料の金額その他必要な事項を定めるものとする。
           </div>
 
           <h2 className={articleTitleClass}>第2条 （個別契約等）</h2>
@@ -92,7 +94,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           </div>
 
           <h2 className={articleTitleClass}>第5条 （スケジュール）</h2>
-          <div className={textClass}>
+          <div className={`${textClass} section-highlight ${highlightSection === 'schedule' ? 'active' : ''}`}>
             1. 受託者は, 委託業務の遂行にあたり, 作業スケジュール, 作業工程表等, 委託業務の進捗管理の目安となる計画（企画, 設計, 制作, レビュー, 修正対応その他成果物完成までの工程を含む。）を作成するものとし, これを委託者に提出するものとする。<br/>
             2. 委託者は, 受託者から提出された確認事項（仕様確認, レビュー, 承認, 素材提供, アカウント提供等）について, 個別契約または別途合意する期限内に対応するものとする。<br/>
             3. 委託者の前項対応の遅延, 差戻し, 関係者追加その他委託者の事情により工程に影響が生じた場合, 納期・マイルストーンは当該影響に応じて当然に変更（延長）されるものとし, 受託者に追加作業が発生するときは, 第4条第3項に従い追加委託料を協議・合意するものとする。<br/>
@@ -156,11 +158,11 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           </div>
 
           <h2 className={articleTitleClass}>第14条 （委託料）</h2>
-          <div className={textClass}>
+          <div className={`${textClass} section-highlight ${highlightSection === 'payment' ? 'active' : ''}`}>
             1. 委託者は, 受託者に対し, 個別契約で定める委託料を支払うものとする。<br/>
             2. 請負型業務の委託料については, 個別契約で定める固定金額（マイルストーン払い等を含む）とする。マイルストーン払いを採用する場合, 各マイルストーンの達成条件（成果物の納入, 中間検収の合格等）を個別契約で明確に定めるものとする。<br/>
             3. 準委任型業務の委託料については, 個別契約にて特段の定めのない限り, 次の各号の通りとする。<br/>
-            (1) 月額委託料：個別契約に定める月額委託料を支払う。なお, 当該月額委託料には, 個別契約に定める上限時間までの稼働を含むものとする。<br/>
+            (1) 月額委託料：個別契約に定める月額委託料を支払う. なお, 当該月額委託料には, 個別契約に定める上限時間までの稼働を含むものとする。<br/>
             (2) 超過委託料：前号の上限時間を超過して業務を行った場合, 委託者は, 個別契約に定める超過単価（時間単価または人日単価）に基づき計算した額を追加で支払う。人日単価の標準は, 個別契約で別途定めるものとし, 特段の定めがない場合は1人日あたり金50,000円とする。<br/>
             4. 前項の超過稼働が, 委託者の確認遅延, 差戻し, 関係者追加, 仕様変更等の事由に起因して生じた場合（待機時間, 再調整時間等を含む）であっても, 委託者は第3項第2号に基づき超過委託料を支払うものとする。<br/>
             5. 委託者は, 委託料を, 個別契約で定める支払期限までに, 受託者の別途指定する金融機関口座に振り込むものとする。なお, 振込手数料は委託者の負担とする。<br/>
@@ -210,7 +212,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           </div>
 
           <h2 className={articleTitleClass}>第20条 （成果物にかかる権利の取扱い）</h2>
-          <div className={textClass}>
+          <div className={`${textClass} section-highlight ${highlightSection === 'rights' ? 'active' : ''}`}>
             1. 成果物の著作権（著作権法第27条及び第28条の権利を含む。）は, 全て委託者に帰属するものとし, 権利の発生と同時に委託者に移転するものとする。<br/>
             2. 受託者は, 委託者及び委託者の指定する第三者に対し, 著作者人格権を行使しないものとする。<br/>
             3. 前二項にかかわらず, 受託者が従前より有していた著作権等の知的財産権（汎用的なプログラム, モジュール, デザインテンプレート, ノウハウ等を含む。）は受託者に留保されるものとし, 委託者は, 本契約の目的の範囲内においてこれらを非独占的に利用することができるものとする。<br/>
@@ -257,7 +259,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
 
           <h2 className={articleTitleClass}>第26条 （損害賠償）</h2>
           <div className={textClass}>
-            本契約又は個別契約に関連して, 委託者又は受託者の責めに帰すべき事由により相手方に損害が生じた場合における損害賠償責任は, 当該損害が直接かつ通常の損害である場合に限られるものとする。なお, 本契約又は個別契約に関連して委託者又は受託者が負う損害賠償責任の総額は, 当該損害が発生した個別契約に基づく委託料の総額を上限とする。
+            本契約又は個別契約に関連して, 委託者又は受託者の責めに帰すべき事由により相手方に損害が生じた場合における損害賠償責任は, 当該損害が直接かつ通常の損害である場合に限られるものとする. なお, 本契約又は個別契約に関連して委託者又は受託者が負う損害賠償責任の総額は, 当該損害が発生した個別契約に基づく委託料の総額を上限とする。
           </div>
 
           <h2 className={articleTitleClass}>第27条 （秘密保持義務）</h2>
@@ -320,7 +322,7 @@ const BasicContract: React.FC<BasicContractProps> = ({ data }) => {
           <div className={textClass}>本契約に定めのない事項又は本契約の条項の解釈について疑義が生じたときは, 委託者及び受託者は, 信義誠実の原則に従い協議の上, 円満に解決を図るものとする。</div>
         </section>
 
-        <div className="mt-12 space-y-10 signature-block">
+        <div className={`mt-12 space-y-10 signature-block section-highlight ${highlightSection === 'signature' ? 'active' : ''}`}>
           <p className="text-[11px]">{formatDate(data.documentDate)}</p>
           <div className="grid grid-cols-2 gap-10 text-[10px]">
             <div className="space-y-4">

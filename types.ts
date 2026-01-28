@@ -47,6 +47,7 @@ export interface EstimateData {
   provider: ProviderInfo;
   items: EstimateItem[];
   discount: number;
+  taxRate: number; // 税率 (%)
   contractDate: string;
   workStartDate: string;
   workEndDate: string;

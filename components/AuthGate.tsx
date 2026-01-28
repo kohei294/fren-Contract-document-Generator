@@ -28,7 +28,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
     if (password === CORRECT_PASSWORD) {
       setIsExiting(true);
       setTimeout(() => {
-        localStorage.setItem('fren_auth_status', 'true');
+        // セキュリティ強化：localStorage への保存を廃止
         onAuthenticated();
       }, 600);
     } else {
@@ -52,7 +52,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="relative group">
             <label className="block text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-left opacity-60">
-              password
+              パスワードを入力してください
             </label>
             <div className="relative">
               <input
@@ -74,12 +74,12 @@ const AuthGate: React.FC<AuthGateProps> = ({ onAuthenticated }) => {
           
           {error && (
             <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest animate-pulse flex items-center justify-center gap-2">
-              <ShieldAlert size={12} /> Access Denied
+              <ShieldAlert size={12} /> アクセス権限がありません
             </p>
           )}
         </form>
 
-        <div className="mt-24 text-white text-[9px] uppercase tracking-widest font-medium opacity-40">
+        <div className="mt-24 text-white text-[9px] normal-case tracking-widest font-medium opacity-40">
           &copy; 2026 fren Inc.
         </div>
       </div>

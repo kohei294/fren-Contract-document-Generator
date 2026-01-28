@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Printer, FileText, ClipboardList, ReceiptText } from 'lucide-react';
+
+import React, { useState, useEffect } from 'react';
+import { Printer, FileText, ClipboardList, ReceiptText, Sparkles } from 'lucide-react';
 import { EstimateData } from '../types';
 import BasicContract from './documents/BasicContract';
 import IndividualContract from './documents/IndividualContract';
@@ -7,11 +8,12 @@ import EstimateSheet from './documents/EstimateSheet';
 
 interface DocumentPreviewProps {
   data: EstimateData;
+  highlightSection?: string | null;
 }
 
 type DocView = 'BASIC' | 'INDIVIDUAL' | 'ESTIMATE';
 
-const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
+const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data, highlightSection }) => {
   const [view, setView] = useState<DocView>('BASIC');
 
   const handlePrint = (e: React.MouseEvent) => {
@@ -28,54 +30,40 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col items-center print:block print:w-full print:m-0 print:p-0">
-      {/* View Switcher */}
-      <div className="no-print bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-2 mb-10 flex gap-2 border border-slate-200 sticky top-4 z-[100]">
-        <button 
-          onClick={() => setView('BASIC')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all duration-200 ${view === 'BASIC' ? 'bg-slate-900 text-white shadow-lg scale-105' : 'hover:bg-slate-50 text-slate-400'}`}
-        >
-          <FileText size={18} />
-          基本契約書
-        </button>
-        <button 
-          onClick={() => setView('INDIVIDUAL')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all duration-200 ${view === 'INDIVIDUAL' ? 'bg-slate-900 text-white shadow-lg scale-105' : 'hover:bg-slate-50 text-slate-400'}`}
-        >
-          <ClipboardList size={18} />
-          個別契約書
-        </button>
-        <button 
-          onClick={() => setView('ESTIMATE')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all duration-200 ${view === 'ESTIMATE' ? 'bg-slate-900 text-white shadow-lg scale-105' : 'hover:bg-slate-50 text-slate-400'}`}
-        >
-          <ReceiptText size={18} />
-          御見積書
-        </button>
+    <div className="flex flex-col items-center print:block print:w-full print:m-0 print:p-0 relative">
+      <div className="no-print bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-2 mb-10 flex gap-2 border border-slate-200 sticky top-4 z-[100] scale-90 md:scale-100">
+        <button onClick={() => setView('BASIC')} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all ${view === 'BASIC' ? 'bg-slate-900 text-white shadow-lg' : 'hover:bg-slate-50 text-slate-400'}`}><FileText size={16} />基本契約</button>
+        <button onClick={() => setView('INDIVIDUAL')} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all ${view === 'INDIVIDUAL' ? 'bg-slate-900 text-white shadow-lg' : 'hover:bg-slate-50 text-slate-400'}`}><ClipboardList size={16} />個別契約</button>
+        <button onClick={() => setView('ESTIMATE')} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all ${view === 'ESTIMATE' ? 'bg-slate-900 text-white shadow-lg' : 'hover:bg-slate-50 text-slate-400'}`}><ReceiptText size={16} />御見積書</button>
       </div>
 
-      {/* Action Bar */}
       <div className="no-print w-full max-w-[210mm] flex justify-between items-center mb-6 text-slate-500 border-b border-slate-200 pb-4">
-        <div className="flex items-center gap-2">
-           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-           <span className="text-sm font-bold uppercase tracking-widest text-slate-400">Preview: <span className="text-slate-800">{getDocTitle()}</span></span>
+        <div className="flex items-center gap-3">
+           <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-full border border-emerald-100 uppercase tracking-widest">
+             <Sparkles size={10} className="animate-pulse" /> リアルタイム反映中
+           </div>
+           <span className="text-xs font-bold text-slate-800">{getDocTitle()}</span>
         </div>
-        <button 
-          onClick={handlePrint}
-          className="flex items-center gap-2 bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 transition-all shadow-xl active:scale-95 group relative overflow-hidden"
-        >
-          <Printer size={20} className="group-hover:scale-110 transition-transform" />
-          <span className="font-black">印刷・PDFとして出力</span>
-        </button>
+        <button onClick={handlePrint} className="flex items-center gap-2 bg-indigo-600 text-white px-8 py-2.5 rounded-xl hover:bg-indigo-700 transition-all shadow-xl active:scale-95 group"><Printer size={18} /><span className="font-black text-xs">PDF出力 / 印刷</span></button>
       </div>
 
-      {/* Document Container */}
-      {/* print:block を使用してflexの影響を完全に排除する */}
-      <div className="w-full flex flex-col items-center gap-10 print:gap-0 print:block print:p-0 print:w-full">
-        {view === 'BASIC' && <BasicContract data={data} />}
-        {view === 'INDIVIDUAL' && <IndividualContract data={data} />}
-        {view === 'ESTIMATE' && <EstimateSheet data={data} />}
+      <div className={`w-full flex flex-col items-center gap-10 print:gap-0 print:block print:p-0 print:w-full transition-all duration-500`}>
+        {view === 'BASIC' && <BasicContract data={data} highlightSection={highlightSection} />}
+        {view === 'INDIVIDUAL' && <IndividualContract data={data} highlightSection={highlightSection} />}
+        {view === 'ESTIMATE' && <EstimateSheet data={data} highlightSection={highlightSection} />}
       </div>
+
+      <style>{`
+        .section-highlight {
+          position: relative;
+          transition: all 0.4s ease;
+        }
+        .section-highlight.active {
+          background-color: rgba(79, 70, 229, 0.05);
+          box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+          border-radius: 4px;
+        }
+      `}</style>
     </div>
   );
 };
