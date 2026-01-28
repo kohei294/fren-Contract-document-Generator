@@ -48,7 +48,7 @@ const generateEstimateNumber = (dateStr?: string) => {
 
 const App: React.FC = () => {
   // セキュリティ強化：リロードのたびに認証を求めるため初期値を false にし、localStorage チェックを廃止
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<'create' | 'history'>('create');
   const [viewMode, setViewMode] = useState<'split' | 'input' | 'preview'>('split');
   const [isLoading, setIsLoading] = useState(false);
