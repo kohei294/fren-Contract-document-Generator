@@ -346,7 +346,7 @@ const InputForm: React.FC<InputFormProps> = ({ data, onChange, isFullWidth = fal
             <h3 className="font-black text-slate-800 text-sm uppercase tracking-widest italic">STEP 5: 見積明細エディタ</h3>
           </div>
           <div className="relative">
-            <button type="button" onClick={() => setShowAddCat(!showAddCat)} className="flex items-center gap-2 text-[11px] font-bold bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition shadow-lg active:scale-95"><Plus size={16} /><span>カテゴリーを追加</span></button>
+            <button type="button" onClick={() => setShowAddCat(!showAddCat)} className="flex items-center gap-2 text-[11px] font-bold bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition shadow-lg active:scale-95"><Plus size={16} /><span>カテゴリー追加</span></button>
             {showAddCat && (
               <div className="absolute right-0 mt-3 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-[100] p-2 animate-in zoom-in-95 duration-150 border-t-4 border-t-indigo-500">
                 <p className="text-[10px] font-black text-slate-400 px-3 py-2 uppercase tracking-tighter">おすすめのカテゴリー</p>
