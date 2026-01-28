@@ -63,6 +63,13 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data, highlightSectio
           box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
           border-radius: 4px;
         }
+        @media print {
+          .section-highlight.active {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+          }
+        }
       `}</style>
     </div>
   );
